@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+#install your load balancer
+
+sudo apt-get -y install software-properties-common
+sudo add-apt-repository ppa:vbernat/haproxy-1.8
+sudo apt-get update
+sudo apt-get -y install haproxy
+echo "ENABLED=1" >> /etc/default/haproxy
+printf %s "listen 6023-webs
+    bind *:80
+    mode http
+    balance roundrobin
+    server 6023-web-01 54.167.52.184:80 check
+    server 6023-web-02 52.201.254.203:80 check
+" >> /etc/haproxy/haproxy.cfg
+sudo service haproxy restart
